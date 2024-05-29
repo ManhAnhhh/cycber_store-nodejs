@@ -1,11 +1,16 @@
 const express = require("express");
-
+const config = require("config");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Welcome");
-})
+// config file tĩnh
+app.use("/static", express.static(config.get("app.static_folder")));
 
-app.listen(port = 3000, (req, res) => {
-  console.log("Server listening on " + port);
-})
+// Set EJS as templating engine 
+app.set('views', config.get("app.views_folder"))
+app.set('view engine', config.get("app.view_engine"));
+
+app.get("/", (req, res) => {
+  res.render('site/home.ejs');
+});
+
+module.exports = app;
